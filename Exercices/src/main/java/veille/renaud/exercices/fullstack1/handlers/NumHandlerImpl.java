@@ -13,6 +13,7 @@ public class NumHandlerImpl implements NumHandler {
 
     @Override
     public Mono<ServerResponse> num(ServerRequest serverRequest) {
+        System.out.println("test");
         return ok().body(just(100), Integer.class);
     }
 }
