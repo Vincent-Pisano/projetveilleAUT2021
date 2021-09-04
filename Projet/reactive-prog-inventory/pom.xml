@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.veille2021</groupId>
-    <artifactId>reactive-prog-backend</artifactId>
+    <artifactId>reactive-prog-inventory</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>reactive-prog-backend</name>
+    <name>reactive-prog-inventory</name>
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>11</java.version>
