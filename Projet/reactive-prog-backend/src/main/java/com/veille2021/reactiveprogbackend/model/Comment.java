@@ -2,11 +2,10 @@ package com.veille2021.reactiveprogbackend.model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
+import javax.persistence.Column;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
-import java.math.BigDecimal;
 
 @Data
 @Entity
@@ -20,7 +19,7 @@ public class Comment {
     private String comment;
 
     @OneToOne
-    private User user;
+    private Customer customer;
 
     @OneToOne
     private Item item;

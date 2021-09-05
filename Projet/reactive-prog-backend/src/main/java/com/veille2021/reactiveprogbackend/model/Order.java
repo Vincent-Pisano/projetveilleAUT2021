@@ -2,7 +2,7 @@ package com.veille2021.reactiveprogbackend.model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
+import javax.persistence.Column;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -32,7 +32,7 @@ public class Order {
 
     @OneToOne
     @Column
-    private User user;
+    private Customer customer;
 
 
 }

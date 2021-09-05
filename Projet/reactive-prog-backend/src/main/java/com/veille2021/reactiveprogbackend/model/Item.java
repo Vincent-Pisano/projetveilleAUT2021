@@ -2,7 +2,7 @@ package com.veille2021.reactiveprogbackend.model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
+import javax.persistence.Column;
 
 import javax.persistence.Entity;
 import java.math.BigDecimal;
