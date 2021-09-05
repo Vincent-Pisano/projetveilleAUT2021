@@ -20,7 +20,9 @@ public class Customer {
     @Column
     private String password;
 
-    public boolean isUsernameAndPasswordNotNull() {
-        return username != null && password != null;
+    public Customer(Integer idCustomer, String username, String password) {
+        this.idCustomer = idCustomer;
+        this.username = username;
+        this.password = password;
     }
 }

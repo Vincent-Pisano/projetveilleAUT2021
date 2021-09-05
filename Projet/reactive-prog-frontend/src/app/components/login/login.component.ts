@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { User } from 'src/models/user';
+import { UserService } from 'src/app/service/user.service';
+import { Customer } from 'src/models/customer';
 
 @Component({
   selector: 'app-login',
@@ -11,26 +12,44 @@ import { User } from 'src/models/user';
 export class LoginComponent implements OnInit {
 
   validMessage:string = "";
-  user:User = new User();
+  customer:Customer = new Customer();
 
-  loginForm = new FormGroup({
+  SignInForm = new FormGroup({
     username: new FormControl("", [Validators.required, Validators.minLength(4)]),
     password: new FormControl("", [Validators.required, Validators.minLength(4)])
   });
 
-  constructor(private router:Router) { }
+  constructor(private service: UserService, private router:Router) { }
 
   ngOnInit(): void {
   }
 
   onSubmit(): void {
-    if (this.loginForm.valid)
+    if (this.SignInForm.valid)
     {
-      
+      this.signIn();
     }
     else{
       this.validMessage = "Please fill the form before Signing In  !"
     }
+  }
+
+  signIn(): any {
+    this.service.signIn(this.SignInForm.get("username")!.value, this.SignInForm.get("password")!.value).subscribe(
+      (data) => {
+        this.customer = data;
+        console.log(data);
+        console.log("--------------------")
+        console.log(this.customer);
+        if (this.customer != undefined) {
+          this.SignInForm.reset();
+          this.router.navigateByUrl('/home', {state: this.customer})
+        }
+        else{
+          this.validMessage = "You donkey, check your credentials  !"
+        }
+      }
+    )
   }
 
 }

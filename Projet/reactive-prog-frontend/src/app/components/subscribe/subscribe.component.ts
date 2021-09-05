@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, Observer } from 'rxjs';
 import { UserService } from 'src/app/service/user.service';
-import { User } from 'src/models/user';
+import { Customer } from 'src/models/customer';
 
 @Component({
   selector: 'app-subscribe',
@@ -13,7 +13,7 @@ import { User } from 'src/models/user';
 export class SubscribeComponent implements OnInit {
 
   validMessage:string = "";
-  user:User = new User();
+  customer:Customer = new Customer();
 
   signUpForm = new FormGroup({
     username: new FormControl("", [Validators.required, Validators.minLength(4)]),
@@ -38,21 +38,19 @@ export class SubscribeComponent implements OnInit {
 
   signUp(): any {
     console.log("test 2");
-    this.user.username = this.signUpForm.get("username")!.value;
-    this.user.password = this.signUpForm.get("password")!.value;
-    this.service.signUp(this.user).subscribe(
+    this.customer.username = this.signUpForm.get("username")!.value;
+    this.customer.password = this.signUpForm.get("password")!.value;
+    this.service.signUp(this.customer).subscribe(
       (data) => {
-        console.log("test 3");
-        console.log(this.user.username + " " + this.user.password)
-        console.log(data.idUser)
-        console.log(typeof(data))
-        console.log(typeof(this.user))
-        this.user = data;
-        console.log(typeof(this.user))
-        console.log(this.user);
-        this.signUpForm.reset();
-
-        //this.router.navigateByUrl('/home', {state: this.user})
+        this.customer = data;
+        if (this.customer != undefined)
+        {
+          this.signUpForm.reset();
+          this.router.navigateByUrl('/home', {state: this.customer})
+        }
+        else{
+          this.validMessage = "Oops, an error occured, we couldn't create your account !"
+        }
       }
     )
   }

@@ -26,7 +26,9 @@ public class RouterConfig {
         return RouterFunctions
                 .route(
                         RequestPredicates.POST("/subscribe"),
-                        userHandler::subscribe);
+                        userHandler::subscribe)
+                .andRoute(RequestPredicates.GET("/login"),
+                        userHandler::login);
 
     }
 

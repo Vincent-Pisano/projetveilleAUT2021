@@ -8,4 +8,6 @@ public interface UserHandler {
 
     Mono<ServerResponse> subscribe(ServerRequest serverRequest);
 
+    Mono<ServerResponse> login(ServerRequest serverRequest);
+
 }

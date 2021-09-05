@@ -1,27 +1,24 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { User } from 'src/models/user';
+import { Customer } from 'src/models/customer';
 import { GenericService } from './genericService';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService extends GenericService<User, Number> {
+export class UserService extends GenericService<Customer, Number> {
   constructor(http: HttpClient) {
     super(http, 'http://localhost:8080');
   }
 
-  signIn(email: string, password: string): Observable<User> {
-    return this.http.get<User>(this.url + '/login/' + email + '/' + password, {
-      responseType: 'event-stream' as 'json',
-    });
+  signIn(username: string, password: string): Observable<Customer> {
+    return this.http.get<Customer>(this.url + '/login?username=' + username + "&password=" + password);
   }
 
-  signUp(user: User): Observable<User> {
-    return this.http.post<User>(this.url + '/subscribe', user, {
-      responseType: 'application/json' as 'json',
-    });
+  signUp(customer: Customer): Observable<Customer> {
+    console.log(customer)
+    return this.http.post<Customer>(this.url + '/subscribe', customer);
   }
 
 }

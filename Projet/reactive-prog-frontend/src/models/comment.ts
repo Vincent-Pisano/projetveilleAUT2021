@@ -1,11 +1,11 @@
 import { Item } from "./item";
-import { User } from "./user";
+import { Customer } from "./customer";
 
 export class Comment {
 
     idComment: number | undefined;
     comment: string | undefined;
     item: Item | undefined;
-    user: User | undefined;
+    customer: Customer | undefined;
 
 }

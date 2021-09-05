@@ -1,5 +1,5 @@
 import { Item } from "./item";
-import { User } from "./user";
+import { Customer } from "./customer";
 
 export class Order {
 
@@ -7,6 +7,6 @@ export class Order {
     totalPrice: number | undefined;
     status: string | undefined;
     items: Array<Item> | undefined;
-    user: User | undefined;
+    customer: Customer | undefined;
 
 }

@@ -1,6 +1,6 @@
-export class User {
+export class Customer {
 
-    idUser: number | undefined;
+    idCustomer: number | undefined;
     username: string | undefined;
     password: string | undefined;
     

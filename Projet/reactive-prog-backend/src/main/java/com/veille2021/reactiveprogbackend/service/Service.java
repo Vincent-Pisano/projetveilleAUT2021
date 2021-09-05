@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 
 @org.springframework.stereotype.Service
 public class Service {
-
+    /*
     @Autowired
     private CustomerRepository customerRepository;
     private CommentRepository commentRepository;
