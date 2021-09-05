@@ -1,0 +1,22 @@
+<div class="login-container text-c">
+    <div class="container-content">
+        <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()" class="margin-t" >
+            <div class="form-group my-4">
+                <input type="text" class="form-control" formControlName="username" placeholder="Username" required="">
+            </div>
+            <div class="form-group my-4">
+                <input type="password" class="form-control" formControlName="password" placeholder="*****" required="">
+            </div>
+            <button type="submit" class="form-button button-l margin-b" >Sign Up</button>
+
+            <p class="text-whitesmoke text-align-center"><small>Already have an Account ?</small></p>
+            <a class="text-darkyellow" [routerLink]="['/login']"><small>Sign In</small></a>
+        </form>
+        <p class="margin-t text-whitesmoke"><small> Renaud Vincent &copy; 2021</small> </p>
+        <div *ngIf="validMessage != ''" class="text-danger text-center">
+            <h3 class="alert alert-danger py-2 mt-3 display-4">{{validMessage}}</h3>
+            <div class="py-2"></div>
+        </div>
+    
+    </div>
+</div>
