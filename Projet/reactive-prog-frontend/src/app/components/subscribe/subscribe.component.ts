@@ -28,7 +28,6 @@ export class SubscribeComponent implements OnInit {
   onSubmit(): void {
     if (this.signUpForm.valid)
     {
-      console.log("test 1");
       this.signUp();
     }
     else{
@@ -37,19 +36,19 @@ export class SubscribeComponent implements OnInit {
   }
 
   signUp(): any {
-    console.log("test 2");
     this.customer.username = this.signUpForm.get("username")!.value;
     this.customer.password = this.signUpForm.get("password")!.value;
     this.service.signUp(this.customer).subscribe(
       (data) => {
         this.customer = data;
-        if (this.customer != undefined)
+        if (this.customer != undefined && this.customer.idCustomer != undefined)
         {
           this.signUpForm.reset();
+          sessionStorage.setItem('username', this.customer.username!)
           this.router.navigateByUrl('/home', {state: this.customer})
         }
         else{
-          this.validMessage = "Oops, an error occured, we couldn't create your account !"
+          this.validMessage = "Oops, an error occured... your username is already taken !"
         }
       }
     )

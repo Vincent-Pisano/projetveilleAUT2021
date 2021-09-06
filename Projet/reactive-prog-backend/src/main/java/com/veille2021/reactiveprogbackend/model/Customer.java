@@ -25,4 +25,10 @@ public class Customer {
         this.username = username;
         this.password = password;
     }
+
+    public Customer() { }
+
+    public boolean usernameAndPasswordNotNull() {
+        return username != null && password != null;
+    }
 }

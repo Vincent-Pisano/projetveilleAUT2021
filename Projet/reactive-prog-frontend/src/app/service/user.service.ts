@@ -21,4 +21,13 @@ export class UserService extends GenericService<Customer, Number> {
     return this.http.post<Customer>(this.url + '/subscribe', customer);
   }
 
+  userIsLogIn(): boolean {
+    let email = sessionStorage.getItem('username');
+    return email != null;
+  }
+
+  public logout(): void {
+    sessionStorage.clear();
+  }
+
 }

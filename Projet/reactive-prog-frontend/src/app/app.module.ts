@@ -11,6 +11,7 @@ import { Error404Component } from './components/error404/error404.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './components/login/login.component';
 import { SubscribeComponent } from './components/subscribe/subscribe.component';
+import { LogoutComponent } from './components/logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { SubscribeComponent } from './components/subscribe/subscribe.component';
     HomeComponent,
     Error404Component,
     LoginComponent,
-    SubscribeComponent
+    SubscribeComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

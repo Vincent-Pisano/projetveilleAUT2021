@@ -1,5 +1,6 @@
 package com.veille2021.reactiveprogbackend.router;
 
+import com.veille2021.reactiveprogbackend.handler.ItemHandler;
 import com.veille2021.reactiveprogbackend.handler.UserHandler;
 import com.veille2021.reactiveprogbackend.service.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,21 +16,23 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 public class RouterConfig {
 
     private final UserHandler userHandler;
+    private final ItemHandler itemHandler;
 
-    public RouterConfig(UserHandler userHandler) {
+    public RouterConfig(UserHandler userHandler, ItemHandler itemHandler) {
         this.userHandler = userHandler;
+        this.itemHandler = itemHandler;
     }
 
     @Bean
-    @CrossOrigin("http://localhost:7500")
     public RouterFunction<ServerResponse> routerFunction() {
         return RouterFunctions
                 .route(
-                        RequestPredicates.POST("/subscribe"),
-                        userHandler::subscribe)
-                .andRoute(RequestPredicates.GET("/login"),
-                        userHandler::login);
-
+                        RequestPredicates.GET("/login"),
+                        userHandler::login)
+                //.andRoute(RequestPredicates.GET("/login"),
+                //        userHandler::subscribe)
+                .andRoute(RequestPredicates.GET("/getItems"),
+                        itemHandler::getItems);
     }
 
 }

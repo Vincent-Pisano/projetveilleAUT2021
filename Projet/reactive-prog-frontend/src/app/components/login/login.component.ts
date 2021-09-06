@@ -38,11 +38,9 @@ export class LoginComponent implements OnInit {
     this.service.signIn(this.SignInForm.get("username")!.value, this.SignInForm.get("password")!.value).subscribe(
       (data) => {
         this.customer = data;
-        console.log(data);
-        console.log("--------------------")
-        console.log(this.customer);
         if (this.customer != undefined) {
           this.SignInForm.reset();
+          sessionStorage.setItem('username', this.customer.username!)
           this.router.navigateByUrl('/home', {state: this.customer})
         }
         else{

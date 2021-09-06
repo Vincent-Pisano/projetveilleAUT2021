@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 
 @org.springframework.stereotype.Service
 public class Service {
-    /*
+
     @Autowired
     private CustomerRepository customerRepository;
     private CommentRepository commentRepository;
@@ -23,24 +23,24 @@ public class Service {
         if (username != null && password != null)
             response = customerRepository.findByUsernameAndPassword(username, password);
         return response;
-    }
+    }*/
 
     public Mono<Customer> subscribe(Customer customer)
     {
-        Mono<Customer> response = Mono.empty();
-        if (customer != null && customer.isUsernameAndPasswordNotNull()) {
-            customerRepository.findByUsernameAndPassword(customer.getUsername(), customer.getPassword())
-                    .hasElement().subscribe(
-                        hasElements ->
-                        {
-                            System.out.println("DEBUG >> Mono has elements -> " + hasElements);
-
-                        }
-
-                    );
+        if (customer != null && customer.usernameAndPasswordNotNull()) {
+            return customerRepository.save(customer).onErrorReturn(new Customer());
         }
-        return response;
-    }*/
-
-
+        return Mono.just(new Customer());
+    }
 }
+
+/*
+customerRepository.findByUsernameAndPassword(customer.getUsername(), customer.getPassword())
+    .hasElement().subscribe(
+        hasElements ->
+        {
+            System.out.println("DEBUG >> Mono has elements -> " + hasElements);
+        }
+    );
+
+*/

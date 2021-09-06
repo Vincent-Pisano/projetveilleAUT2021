@@ -28,8 +28,8 @@ public class UserHandlerImpl implements UserHandler{
         //System.out.println(serverRequest.attributes());
         //serverRequest.bodyToMono(String.class).doOnNext(body -> System.out.println(body));
         //serverRequest.bodyToMono(String.class).hasElement().subscribe(System.out::println);
-        Mono<String> body = serverRequest.bodyToMono(String.class);
-        body.subscribe(System.out::println);
+        //Mono<String> body = serverRequest.bodyToMono(String.class);
+        //body.subscribe(System.out::println);
         return ok().body(just(100), Integer.class);
     }
 
