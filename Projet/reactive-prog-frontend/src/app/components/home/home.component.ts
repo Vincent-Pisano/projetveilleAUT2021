@@ -32,10 +32,11 @@ export class HomeComponent implements OnInit {
       const source = new EventSource('http://localhost:8080/getItems')
 
       source.onmessage = (event) => {
-        this.itemlist.push(event.data);
+        this.item = JSON.parse(event.data)
+        this.itemlist.push(this.item);
         this.itemlist.sort();
-        this.item = event.data;
-        console.log(this.item.name)
+        
+        console.log(this.item.idItem)
         //On utilise NgZone pour notifier 'results' des updates à l'opération async
         //En gros = on render de nouveau l'HTML
         //le ... | async permet de se subscribe à l'observer

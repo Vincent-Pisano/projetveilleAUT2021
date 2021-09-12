@@ -9,6 +9,7 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
 
 import java.time.Duration;
 import java.util.List;
@@ -29,6 +30,7 @@ public class ItemHandlerImpl implements ItemHandler{
     public Mono<ServerResponse> getItems(ServerRequest serverRequest) {
         System.out.println(serverRequest);
         return ok().contentType(MediaType.TEXT_EVENT_STREAM)
-                .body(Flux.interval(Duration.ofMillis(random.nextInt(200))).zipWith(repository.findAll()), Item.class);
+                .body(Flux.interval(Duration.ofMillis(random.nextInt(200)))
+                        .zipWith(repository.findAll()).map(Tuple2::getT2), Item.class);
     }
 }
