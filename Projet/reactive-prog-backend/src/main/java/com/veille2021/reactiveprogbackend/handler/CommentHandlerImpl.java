@@ -29,10 +29,9 @@ public class CommentHandlerImpl implements CommentHandler{
     public Mono<ServerResponse> getComments(ServerRequest serverRequest) {
         System.out.println(serverRequest);
         Optional<String> idItem = serverRequest.queryParam("idItem");
-        System.out.println(idItem.get());
         return idItem.map(
                     s -> ok().contentType(MediaType.TEXT_EVENT_STREAM)
-                        .body(repository.findAllByIdItem_IdItem(Integer.valueOf(s)), Comment.class))
+                        .body(repository.findAllByItem_IdItem(Integer.valueOf(s)), Comment.class))
                 .orElseGet(
                     () -> ok().contentType(MediaType.TEXT_EVENT_STREAM)
                         .body(Mono.empty(), Comment.class));

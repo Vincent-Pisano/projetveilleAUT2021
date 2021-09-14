@@ -19,6 +19,6 @@ public class ReactiveProgBackendApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        repository.findAllByIdItem_IdItem(95).subscribe(System.out::println);
+        repository.findAllByItem_IdItem(95).subscribe(System.out::println);
     }
 }

@@ -17,9 +17,9 @@ public class Comment {
     private String comment;
 
     @Column
-    private Customer idCustomer;
+    private Customer customer;
 
     @Column
-    private Item idItem;
+    private Item item;
 
 }

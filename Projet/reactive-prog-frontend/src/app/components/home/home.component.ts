@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Observable, Observer } from 'rxjs';
 import { ItemService } from 'src/app/service/item.service';
 import { Customer } from 'src/models/customer';
+import { Comment } from 'src/models/comment';
 import { Item } from 'src/models/item';
 
 @Component({
@@ -14,6 +15,7 @@ export class HomeComponent implements OnInit {
 
   customer:Customer = new Customer();
   item:Item = new Item;
+  comment:Comment = new Comment;
   
   itemlistObserver: Observable<Array<Item>> = new Observable<Array<Item>>();
   itemlist: Array<Item> = Array<Item>();
@@ -31,7 +33,7 @@ export class HomeComponent implements OnInit {
     this.customer = history.state;
     console.log(this.customer);
     this.itemlistObserver = this.getItems();
-    this.commentlistObserver = this.getComment(1);
+    this.commentlistObserver = this.getComment(95);
   }
 
   getItems(): Observable<Array<Item>> {
@@ -62,12 +64,18 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  getComment(idItem:number): Observable<Array<Comment>> {
+  getComment(idItem:number | undefined): Observable<Array<Comment>> {
+    if (idItem == undefined)
+      return new Observable<Array<Comment>>();
     return new Observable<Array<Comment>>((observer: Observer<Array<Comment>>) => {
       const source = new EventSource('http://localhost:8080/getComments?idItem=' + idItem)
 
       source.onmessage = (event) => {
-        console.log(event.data)
+        this.comment = JSON.parse(event.data)
+        console.log(this.comment)
+        this.commentlist.push(this.comment);
+        this.commentlist.sort();
+
         this.ngZone.run(() => observer.next(this.commentlist))
       };
 
@@ -79,7 +87,7 @@ export class HomeComponent implements OnInit {
             observer.complete();
           });
         }
-        this.endSearchItem = true
+        this.endSearchComment = true
       };
     })
   }
