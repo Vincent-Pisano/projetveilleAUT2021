@@ -1,5 +1,6 @@
 package com.veille2021.reactiveprogbackend.router;
 
+import com.veille2021.reactiveprogbackend.handler.CommentHandler;
 import com.veille2021.reactiveprogbackend.handler.ItemHandler;
 import com.veille2021.reactiveprogbackend.handler.UserHandler;
 import com.veille2021.reactiveprogbackend.service.Service;
@@ -17,10 +18,12 @@ public class RouterConfig {
 
     private final UserHandler userHandler;
     private final ItemHandler itemHandler;
+    private final CommentHandler commentHandler;
 
-    public RouterConfig(UserHandler userHandler, ItemHandler itemHandler) {
+    public RouterConfig(UserHandler userHandler, ItemHandler itemHandler, CommentHandler commentHandler) {
         this.userHandler = userHandler;
         this.itemHandler = itemHandler;
+        this.commentHandler = commentHandler;
     }
 
     @Bean
@@ -32,7 +35,9 @@ public class RouterConfig {
                 //.andRoute(RequestPredicates.GET("/login"),
                 //        userHandler::subscribe)
                 .andRoute(RequestPredicates.GET("/getItems"),
-                        itemHandler::getItems);
+                        itemHandler::getItems)
+                .andRoute(RequestPredicates.GET("/getComments"),
+                        commentHandler::getComments);
     }
 
 }

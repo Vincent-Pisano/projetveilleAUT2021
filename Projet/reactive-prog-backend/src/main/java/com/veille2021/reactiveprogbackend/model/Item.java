@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 public class Item {
 
     @Id
-    @Column
+    @Column(name = "id_item")
     private Integer idItem;
 
     @Column

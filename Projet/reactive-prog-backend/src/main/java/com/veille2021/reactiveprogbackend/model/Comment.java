@@ -2,13 +2,11 @@ package com.veille2021.reactiveprogbackend.model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import javax.persistence.Column;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Data
-@Entity
+@Table
 public class Comment {
 
     @Id
@@ -18,10 +16,10 @@ public class Comment {
     @Column
     private String comment;
 
-    @OneToOne
-    private Customer customer;
+    @Column
+    private Customer idCustomer;
 
-    @OneToOne
-    private Item item;
+    @Column
+    private Item idItem;
 
 }

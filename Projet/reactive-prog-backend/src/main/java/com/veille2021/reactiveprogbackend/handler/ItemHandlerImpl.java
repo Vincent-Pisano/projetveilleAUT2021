@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Random;
 
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
-import static reactor.core.publisher.Mono.just;
 
 @Service
 public class ItemHandlerImpl implements ItemHandler{

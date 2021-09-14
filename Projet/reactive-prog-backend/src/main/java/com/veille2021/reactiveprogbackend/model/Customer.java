@@ -11,7 +11,7 @@ import javax.persistence.Entity;
 public class Customer {
 
     @Id
-    @Column
+    @Column(name = "id_customer")
     private Integer idCustomer;
 
     @Column(unique=true)
