@@ -7,13 +7,6 @@
             </div>
             <div class="mt-3">
                 <ul class="list list-inline">
-                    <div>
-                        <hr>
-                        <div *ngFor="let comment of this.commentlistObserver | async" >
-                            <h3>{{comment.customer.username}}</h3>
-                            <p>{{comment.comment}}</p>
-                        </div>
-                    </div>
                     <li *ngFor="let item of this.itemlistObserver | async" (click)="this.getComment(item.idItem)">
                         <div class="d-flex justify-content-between">
                             <div class="d-flex flex-row align-items-center">
@@ -32,6 +25,13 @@
                                     <span>{{item.price}}$</span>
                                     <a href="#" class="btn btn-sm btn-primary">Add to cart</a>
                                 </div>
+                            </div>
+                        </div>
+                        <div *ngIf="this.currentClickedItem == item.idItem">
+                            <hr>
+                            <div *ngFor="let comment of this.commentlistObserver | async" >
+                                <h3>{{comment.customer.username}}</h3>
+                                <p>{{comment.comment}}</p>
                             </div>
                         </div>
                     </li>

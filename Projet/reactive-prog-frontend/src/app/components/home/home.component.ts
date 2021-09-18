@@ -24,8 +24,9 @@ export class HomeComponent implements OnInit {
   commentlistObserver: Observable<Array<Comment>> = new Observable<Array<Comment>>();
   commentlist: Array<Comment> = Array<Comment>();
   endSearchComment: boolean = false;
+  currentClickedItem:number = 0;
 
-  constructor(private service:ItemService, private ngZone: NgZone, private router:Router) { }
+  constructor(private ngZone: NgZone, private router:Router) { }
 
   ngOnInit(): void {
     this.endSearchItem = false;
@@ -73,7 +74,8 @@ export class HomeComponent implements OnInit {
     });
   }*/
 
-  getComment(idItem:number | undefined) { 
+  getComment(idItem:any) {  
+    this.currentClickedItem = idItem
     this.commentlistObserver = this.getCommentObservable(idItem)
   }
 
@@ -86,10 +88,10 @@ export class HomeComponent implements OnInit {
       source.onmessage = (event) => {
         this.comment = JSON.parse(event.data)
         if (this.commentlist.find(c => c.idComment == this.comment.idComment) == undefined) {
+
           this.commentlist.push(this.comment);
           this.commentlist.sort();
         }
-        
         this.ngZone.run(() => observer.next(this.commentlist))
       };
 
