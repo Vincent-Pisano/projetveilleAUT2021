@@ -4,6 +4,8 @@ import com.veille2021.reactiveprogbackend.model.Comment;
 import com.veille2021.reactiveprogbackend.model.Customer;
 import com.veille2021.reactiveprogbackend.model.Item;
 import com.veille2021.reactiveprogbackend.repository.CommentRepository;
+import com.veille2021.reactiveprogbackend.repository.CustomerRepository;
+import com.veille2021.reactiveprogbackend.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -25,15 +27,32 @@ public class CommentHandlerImpl implements CommentHandler{
     @Autowired
     private CommentRepository repository;
 
+    @Autowired
+    private ItemRepository itemRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
+
     @Override
     public Mono<ServerResponse> getComments(ServerRequest serverRequest) {
         System.out.println(serverRequest);
         Optional<String> idItem = serverRequest.queryParam("idItem");
         return idItem.map(
                     s -> ok().contentType(MediaType.TEXT_EVENT_STREAM)
-                        .body(repository.findAllByItem_IdItem(Integer.valueOf(s)), Comment.class))
+                        .body(findCommentFromItem(Integer.valueOf(s)), Comment.class))
                 .orElseGet(
                     () -> ok().contentType(MediaType.TEXT_EVENT_STREAM)
                         .body(Mono.empty(), Comment.class));
+    }
+
+    public Flux<Comment> findCommentFromItem(Integer idItem){
+        return repository.findAllByItem_IdItem(idItem)
+                .flatMap(comment ->
+                        Mono.just(comment)
+                                .zipWith(customerRepository.findCustomerByIdComment(comment.getIdComment()))
+                                .map(tupla -> tupla.getT1().withCustomer(tupla.getT2()))
+                                .zipWith(itemRepository.findById(idItem))
+                                .map(tupla -> tupla.getT1().withItem(tupla.getT2()))
+                );
     }
 }

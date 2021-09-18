@@ -21,4 +21,8 @@ export class ItemService extends GenericService<Item, Number> {
       };
     })
   }
+
+  getComment(idItem: number | undefined): Observable<Array<Comment>> {
+    return this.http.get<Array<Comment>>(this.url + "/getComments?idItem=" + idItem)
+  }
 }

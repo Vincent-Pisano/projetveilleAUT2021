@@ -4,8 +4,14 @@ import { Customer } from "./customer";
 export class Comment {
 
     idComment: number | undefined;
-    comment: string | undefined;
-    item: Item | undefined;
-    customer: Customer | undefined;
+    comment: string;
+    item: Item;
+    customer: Customer;
+
+    constructor() {
+        this.comment = "";
+        this.item = new Item();
+        this.customer = new Customer();
+    }
 
 }

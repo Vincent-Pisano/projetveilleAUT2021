@@ -9,6 +9,6 @@ import org.springframework.data.r2dbc.config.AbstractR2dbcConfiguration;
 public class ReactiveProgConfig extends AbstractR2dbcConfiguration {
     @Override
     public ConnectionFactory connectionFactory() {
-        return ConnectionFactories.get("r2dbc:…");
+        return ConnectionFactories.get("r2dbc:postgresql://localhost/postgres");
     }
 }

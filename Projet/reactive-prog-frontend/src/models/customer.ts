@@ -1,7 +1,12 @@
 export class Customer {
 
     idCustomer: number | undefined;
-    username: string | undefined;
-    password: string | undefined;
+    username: string;
+    password: string;
+
+    public constructor() {
+        this.username = ""
+        this.password = ""
+    }
     
 }

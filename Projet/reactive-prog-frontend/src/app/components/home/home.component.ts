@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit {
   commentlist: Array<Comment> = Array<Comment>();
   endSearchComment: boolean = false;
 
-  constructor(private ngZone: NgZone, private router:Router) { }
+  constructor(private service:ItemService, private ngZone: NgZone, private router:Router) { }
 
   ngOnInit(): void {
     this.endSearchItem = false;
@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit {
     this.customer = history.state;
     console.log(this.customer);
     this.itemlistObserver = this.getItems();
-    this.commentlistObserver = this.getComment(95);
+    
   }
 
   getItems(): Observable<Array<Item>> {
@@ -44,7 +44,6 @@ export class HomeComponent implements OnInit {
         this.item = JSON.parse(event.data)
         this.itemlist.push(this.item);
         this.itemlist.sort();
-        
         //On utilise NgZone pour notifier 'results' des updates à l'opération async
         //En gros = on render de nouveau l'HTML
         //le ... | async permet de se subscribe à l'observer
@@ -52,7 +51,7 @@ export class HomeComponent implements OnInit {
       };
 
       //quand ça se finit
-      source.onopen = (event) => {
+      source.onopen = () => {
         if (this.endSearchItem) {
           source.close();
           this.ngZone.run(() => {
@@ -64,23 +63,38 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  getComment(idItem:number | undefined): Observable<Array<Comment>> {
-    if (idItem == undefined)
-      return new Observable<Array<Comment>>();
+  /*getComment(idItem:number | undefined) {
+    this.service.getComment(idItem).subscribe(() => {
+      (data: any) => {
+        console.log(data)
+      }
+    }, (error) => {
+      console.log(error)
+    });
+  }*/
+
+  getComment(idItem:number | undefined) { 
+    this.commentlistObserver = this.getCommentObservable(idItem)
+  }
+
+  getCommentObservable(idItem:number | undefined): Observable<Array<Comment>> {
+    this.endSearchComment = false
     return new Observable<Array<Comment>>((observer: Observer<Array<Comment>>) => {
+
       const source = new EventSource('http://localhost:8080/getComments?idItem=' + idItem)
 
       source.onmessage = (event) => {
         this.comment = JSON.parse(event.data)
-        console.log(this.comment)
-        this.commentlist.push(this.comment);
-        this.commentlist.sort();
-
+        if (this.commentlist.find(c => c.idComment == this.comment.idComment) == undefined) {
+          this.commentlist.push(this.comment);
+          this.commentlist.sort();
+        }
+        
         this.ngZone.run(() => observer.next(this.commentlist))
       };
 
       //quand ça se finit
-      source.onopen = (event) => {
+      source.onopen = () => {
         if (this.endSearchComment) {
           source.close();
           this.ngZone.run(() => {
