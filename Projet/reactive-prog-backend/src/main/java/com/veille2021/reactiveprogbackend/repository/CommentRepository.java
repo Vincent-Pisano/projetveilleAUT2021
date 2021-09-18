@@ -6,9 +6,18 @@ import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Flux;
 
 public interface CommentRepository extends ReactiveCrudRepository<Comment, Integer> {
-    @Query("SELECT comment.* "
-            + " FROM comment "
-            + " WHERE comment.id_item = $1")
+    @Query("SELECT * FROM COMMENT comment\n" +
+            "INNER JOIN CUSTOMER customer ON comment.id_customer = customer.id_customer\n" +
+            "INNER JOIN ITEM item ON comment.id_item = item.id_item"
+            + " WHERE item.id_item = $1")
     public Flux<Comment> findAllByItem_IdItem(Integer idItem);
+
+    @Query("SELECT comment.id_customer FROM COMMENT comment\n" +
+            " WHERE comment.id_item = $1")
+    public Flux<Integer> findCustomerByItem_IdItem(Integer idItem);
+
+    @Query("SELECT comment.* FROM COMMENT comment\n" +
+            " WHERE comment.id_customer = $1 AND comment.id_item = $2")
+    public Flux<Comment> findCommentByCustomer_IdCustomerAndItem_IdItem(Integer idCustomer, Integer idItem);
 
 }

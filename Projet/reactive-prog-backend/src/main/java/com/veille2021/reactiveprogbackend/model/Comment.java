@@ -4,10 +4,11 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
-@Table
-public class Comment {
+@Table(name = "comment")
+public class Comment implements Serializable {
 
     @Id
     @Column
@@ -16,10 +17,13 @@ public class Comment {
     @Column
     private String comment;
 
-    @Column
+    @ManyToOne(fetch = FetchType.LAZY)
+    //@Column(name = "id_customer")
     private Customer customer;
 
-    @Column
+    @ManyToOne(fetch = FetchType.LAZY)
+    //@Column(name = "id_item")
     private Item item;
+
 
 }

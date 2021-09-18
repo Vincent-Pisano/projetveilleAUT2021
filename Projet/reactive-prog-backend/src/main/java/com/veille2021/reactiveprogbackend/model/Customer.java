@@ -5,10 +5,14 @@ import org.springframework.data.annotation.Id;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import java.io.Serializable;
+import java.util.List;
 
 @Data
-@Entity
-public class Customer {
+@Table(name = "customer")
+public class Customer implements Serializable {
 
     @Id
     @Column(name = "id_customer")

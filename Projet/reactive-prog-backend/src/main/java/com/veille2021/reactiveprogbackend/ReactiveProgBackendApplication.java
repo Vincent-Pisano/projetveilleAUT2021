@@ -1,17 +1,27 @@
 package com.veille2021.reactiveprogbackend;
 
+import com.veille2021.reactiveprogbackend.converter.CommentConverter;
 import com.veille2021.reactiveprogbackend.repository.CommentRepository;
+import com.veille2021.reactiveprogbackend.repository.CustomerRepository;
+import com.veille2021.reactiveprogbackend.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @SpringBootApplication
 public class ReactiveProgBackendApplication implements CommandLineRunner {
 
     @Autowired
-    private CommentRepository repository;
+    private CommentRepository commentRepository;
+
+    @Autowired
+    private ItemRepository itemRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(ReactiveProgBackendApplication.class, args);
@@ -19,6 +29,23 @@ public class ReactiveProgBackendApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        repository.findAllByItem_IdItem(95).subscribe(System.out::println);
+        CommentConverter converter = new CommentConverter();
+        Integer idItem = 95;
+
+        commentRepository.findAllByItem_IdItem(idItem).subscribe(System.out::println);
+
+
+
+
+        //Flux<Integer> childCompanyIds = commentRepository.findCustomerByItem_IdItem(95);
+        //childCompanyIds.subscribe(System.out::println);
+
+        /*commentRepository.findCustomerByItem_IdItem(idItem)
+                .flatMap(idCustomer ->
+                        customerRepository.findById(idCustomer)
+                ).flatMap(customer ->
+                        commentRepository.findCommentByCustomer_IdCustomerAndItem_IdItem(
+                                customer.getIdCustomer(), idItem))
+                .subscribe(System.out::println);*/
     }
 }
