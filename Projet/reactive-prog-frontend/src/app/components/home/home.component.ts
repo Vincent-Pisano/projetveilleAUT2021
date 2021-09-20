@@ -41,16 +41,6 @@ export class HomeComponent implements OnInit {
     return new Observable<Array<Item>>((observer: Observer<Array<Item>>) => {
       const source = new EventSource('http://localhost:8080/getItems')
 
-      source.onmessage = (event) => {
-        this.item = JSON.parse(event.data)
-        this.itemlist.push(this.item);
-        this.itemlist.sort();
-        //On utilise NgZone pour notifier 'results' des updates à l'opération async
-        //En gros = on render de nouveau l'HTML
-        //le ... | async permet de se subscribe à l'observer
-        this.ngZone.run(() => observer.next(this.itemlist))
-      };
-
       //quand ça se finit
       source.onopen = () => {
         if (this.endSearchItem) {
@@ -60,6 +50,16 @@ export class HomeComponent implements OnInit {
           });
         }
         this.endSearchItem = true
+      };
+
+      source.onmessage = (event) => {
+        this.item = JSON.parse(event.data)
+        this.itemlist.push(this.item);
+        this.itemlist.sort();
+        //On utilise NgZone pour notifier 'results' des updates à l'opération async
+        //En gros = on render de nouveau l'HTML
+        //le ... | async permet de se subscribe à l'observer
+        this.ngZone.run(() => observer.next(this.itemlist))
       };
     })
   }
@@ -85,16 +85,6 @@ export class HomeComponent implements OnInit {
 
       const source = new EventSource('http://localhost:8080/getComments?idItem=' + idItem)
 
-      source.onmessage = (event) => {
-        this.comment = JSON.parse(event.data)
-        if (this.commentlist.find(c => c.idComment == this.comment.idComment) == undefined) {
-
-          this.commentlist.push(this.comment);
-          this.commentlist.sort();
-        }
-        this.ngZone.run(() => observer.next(this.commentlist))
-      };
-
       //quand ça se finit
       source.onopen = () => {
         if (this.endSearchComment) {
@@ -104,6 +94,15 @@ export class HomeComponent implements OnInit {
           });
         }
         this.endSearchComment = true
+      };
+
+      source.onmessage = (event) => {
+        this.comment = JSON.parse(event.data)
+        if (this.commentlist.find(c => c.idComment == this.comment.idComment) == undefined) {
+          this.commentlist.push(this.comment);
+          this.commentlist.sort();
+        }
+        this.ngZone.run(() => observer.next(this.commentlist))
       };
     })
   }
