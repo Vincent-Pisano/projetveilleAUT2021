@@ -4,13 +4,11 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
 
 @Data
 @Table(name = "customer")
-@Entity
 public class Customer implements Serializable {
 
     @Id
