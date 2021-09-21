@@ -1,14 +1,16 @@
-package com.veille2021.reactiveprogbackend.model;
+package com.veille2021.reactiveproginventory.model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 
 @Data
 @Entity
+@Table(name = "item")
 public class Item {
 
     @Id

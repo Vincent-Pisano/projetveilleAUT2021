@@ -1,5 +1,7 @@
 package com.veille2021.reactiveprogbackend.model;
 
+import com.veille2021.reactiveproginventory.model.Customer;
+import com.veille2021.reactiveproginventory.model.Item;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
@@ -32,7 +34,7 @@ public class Order {
 
     @OneToOne
     @Column
-    private User user;
+    private Customer customer;
 
 
 }
