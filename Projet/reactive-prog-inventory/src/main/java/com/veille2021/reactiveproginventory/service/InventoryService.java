@@ -24,13 +24,12 @@ public class InventoryService {
 
     @Transactional
     public Mono<Order> handleOrder(Order order) {
-        return Flux.fromIterable(order.getItemOrders())
-                .flatMap(i -> itemRepository.findById(i.getItem().getIdItem()))
+        return Flux.fromIterable(order.getItems())
+                .flatMap(i -> itemRepository.findById(i.getIdItem()))
                 .flatMap(p -> {
-                    int q = order.getItemOrders().stream()
-                            .filter(l -> l.getItem().getIdItem().equals(p.getIdItem()))
-                            .findAny().get()
-                            .getQuantity();
+                    int q = order.getItems().stream()
+                            .filter(l -> l.getIdItem().equals(p.getIdItem()))
+                            .findAny().get().getQuantity();
                     if (p.getQuantity() >= q) {
                         p.setQuantity(p.getQuantity() - q);
                         return itemRepository.save(p);

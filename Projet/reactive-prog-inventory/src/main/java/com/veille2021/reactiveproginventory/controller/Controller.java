@@ -15,7 +15,7 @@ public class Controller {
         this.service = service;
     }
 
-    @PostMapping
+    @PostMapping("/processOrder")
     public Mono<Order> processOrder(@RequestBody Order order) {
         return service.handleOrder(order);
     }

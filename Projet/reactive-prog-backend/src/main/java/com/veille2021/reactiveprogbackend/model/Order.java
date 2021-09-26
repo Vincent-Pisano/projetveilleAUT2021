@@ -2,11 +2,13 @@ package com.veille2021.reactiveprogbackend.model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import javax.persistence.Column;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import java.math.BigDecimal;
 import java.util.List;
-import javax.persistence.*;
 
 @Data
 @Entity
@@ -28,11 +30,14 @@ public class Order {
 
     @OneToMany
     @Column
-    private List<Item> items;
+    private List<ItemOrder> itemOrders;
 
     @OneToOne
     @Column
     private Customer customer;
 
-
+    public Order setStatus(OrderStatus status) {
+        this.status = status;
+        return this;
+    }
 }

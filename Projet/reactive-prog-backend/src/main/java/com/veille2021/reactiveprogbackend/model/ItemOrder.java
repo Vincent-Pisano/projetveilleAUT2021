@@ -1,4 +1,4 @@
-package com.veille2021.reactiveproginventory.model;
+package com.veille2021.reactiveprogbackend.model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -19,7 +19,4 @@ public class ItemOrder {
 
     @ManyToOne
     private Item item;
-
-    @Column
-    private Integer quantity;
 }

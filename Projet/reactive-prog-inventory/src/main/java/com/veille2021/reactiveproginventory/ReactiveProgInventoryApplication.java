@@ -2,7 +2,6 @@ package com.veille2021.reactiveproginventory;
 
 import com.veille2021.reactiveproginventory.model.Customer;
 import com.veille2021.reactiveproginventory.model.Item;
-import com.veille2021.reactiveproginventory.model.ItemOrder;
 import com.veille2021.reactiveproginventory.model.Order;
 import com.veille2021.reactiveproginventory.repository.ItemRepository;
 import com.veille2021.reactiveproginventory.service.InventoryService;
@@ -51,13 +50,10 @@ public class ReactiveProgInventoryApplication implements CommandLineRunner {
 
         //itemRepository.deleteAll(items);
         itemRepository.saveAll(items).map(item -> {
-                    ItemOrder itemOrder = new ItemOrder();
-                    itemOrder.setItem(item);
-                    itemOrder.setQuantity(new Random().nextInt(item.getQuantity()));
-                    //itemOrder.setQuantity(item.getQuantity() + new Random().nextInt(item.getQuantity()));
-                    return itemOrder;
+                    item.setQuantity(new Random().nextInt(item.getQuantity()));
+                    return item;
                 }).collectList()
-                .map(listItemOrder -> {
+                .map(listItems -> {
                     Customer customer = new Customer();
                     customer.setIdCustomer(101);
                     customer.setUsername("Username123");
@@ -67,13 +63,13 @@ public class ReactiveProgInventoryApplication implements CommandLineRunner {
                     order.setIdOrder(1);
                     order.setCustomer(customer);
                     order.setStatus(Order.OrderStatus.PROCESSING);
-                    order.setItemOrders(listItemOrder);
+                    order.setItems(listItems);
                     order.setTotalPrice(new BigDecimal(0));
                     return order;
                 }).subscribe(order -> {
                     service.handleOrder(order).doOnNext(order1 -> {
-                        Flux.fromIterable(order1.getItemOrders())
-                                .flatMap(itemOrder -> itemRepository.findById(itemOrder.getItem().getIdItem()))
+                        Flux.fromIterable(order1.getItems())
+                                .flatMap(item -> itemRepository.findById(item.getIdItem()))
                                 .subscribe(item -> System.out.println("test" + item.toString()));
                     })
                 .subscribe(System.out::println);
@@ -95,7 +91,7 @@ public class ReactiveProgInventoryApplication implements CommandLineRunner {
         //});
 
         //ne fonctione pas
-        itemRepository.findById(1001).subscribe((System.out::println));
+        //itemRepository.findById(1001).subscribe((System.out::println));
 
         //itemRepository.save(item1);
         //itemRepository.save(item2);

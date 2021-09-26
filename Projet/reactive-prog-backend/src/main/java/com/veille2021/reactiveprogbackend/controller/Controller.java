@@ -1,6 +1,7 @@
 package com.veille2021.reactiveprogbackend.controller;
 
 import com.veille2021.reactiveprogbackend.model.Customer;
+import com.veille2021.reactiveprogbackend.model.Order;
 import com.veille2021.reactiveprogbackend.service.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,5 +23,20 @@ public class Controller {
     public Mono<Customer> createAccount(@RequestBody Customer customer) {
         return service.subscribe(customer);
     }
+
+    @PostMapping
+    public Mono<Order> create(@RequestBody Order order) {
+        return service.createOrder(order)
+                .flatMap(o -> {
+                    if (Order.OrderStatus.ERROR.equals(o.getStatus())) {
+                        return Mono.error(
+                                new RuntimeException("Order processing failed, please try again later. "
+                                ));
+                    } else {
+                        return Mono.just(o);
+                    }
+                });
+    }
+
 
 }

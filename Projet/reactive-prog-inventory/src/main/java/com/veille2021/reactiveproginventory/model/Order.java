@@ -30,7 +30,7 @@ public class Order {
 
     @OneToMany
     @Column
-    private List<ItemOrder> itemOrders;
+    private List<Item> items;
 
     @OneToOne
     @Column

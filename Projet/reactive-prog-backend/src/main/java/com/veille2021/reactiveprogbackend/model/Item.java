@@ -2,19 +2,19 @@ package com.veille2021.reactiveprogbackend.model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import javax.persistence.Column;
+import org.springframework.data.relational.core.mapping.Column;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
+@Entity
 @Table(name = "item")
-public class Item implements Serializable {
+public class Item {
 
     @Id
-    @Column(name = "id_item")
+    @Column
     private Integer idItem;
 
     @Column
@@ -25,5 +25,8 @@ public class Item implements Serializable {
 
     @Column
     private BigDecimal price;
+
+    @Column
+    private Integer quantity;
 
 }

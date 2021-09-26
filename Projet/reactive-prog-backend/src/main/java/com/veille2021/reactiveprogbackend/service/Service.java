@@ -1,11 +1,15 @@
 package com.veille2021.reactiveprogbackend.service;
 
 import com.veille2021.reactiveprogbackend.model.Customer;
+import com.veille2021.reactiveprogbackend.model.Order;
 import com.veille2021.reactiveprogbackend.repository.CommentRepository;
 import com.veille2021.reactiveprogbackend.repository.ItemRepository;
 import com.veille2021.reactiveprogbackend.repository.OrderRepository;
 import com.veille2021.reactiveprogbackend.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 @org.springframework.stereotype.Service
@@ -16,6 +20,8 @@ public class Service {
     private CommentRepository commentRepository;
     private OrderRepository orderRepository;
     private ItemRepository itemRepository;
+
+    WebClient client = WebClient.create();
 
     /*public Mono<Customer> login(String username, String password)
     {
@@ -31,6 +37,18 @@ public class Service {
             return customerRepository.save(customer).onErrorReturn(new Customer());
         }
         return Mono.just(new Customer());
+    }
+
+    public Mono<Order> createOrder(Order order) {
+        System.out.println(order);
+        return Mono.just(order)
+                .flatMap(orderRepository::save)
+                .flatMap(o -> {
+                    return client.method(HttpMethod.POST)
+                            .uri("https://localhost:8181/processOrder")
+                            .body(BodyInserters.fromValue(o))
+                            .retrieve().bodyToMono(Order.class);
+                });
     }
 }
 
