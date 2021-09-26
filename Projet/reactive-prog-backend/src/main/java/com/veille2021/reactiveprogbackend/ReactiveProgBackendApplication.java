@@ -5,6 +5,7 @@ import com.veille2021.reactiveprogbackend.model.*;
 import com.veille2021.reactiveprogbackend.repository.CommentRepository;
 import com.veille2021.reactiveprogbackend.repository.CustomerRepository;
 import com.veille2021.reactiveprogbackend.repository.ItemRepository;
+import com.veille2021.reactiveprogbackend.repository.OrderRepository;
 import com.veille2021.reactiveprogbackend.service.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -29,6 +30,9 @@ public class ReactiveProgBackendApplication implements CommandLineRunner {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Autowired
     private Service service;
@@ -59,12 +63,21 @@ public class ReactiveProgBackendApplication implements CommandLineRunner {
                                 customer.getIdCustomer(), idItem)
                         )
                 .subscribe(System.out::println);*/
-        Item item1 = new Item();
+
+        /*Item item1 = new Item();
         item1.setName("Test1");
         item1.setPrice(new BigDecimal("2.35"));
         item1.setType("TEST");
-        item1.setQuantity(0);
-        itemRepository.save(item1).then(service.createOrder(getOrder()));
+        item1.setQuantity(0);*/
+        Mono.just(getOrder())
+                .map(order -> {
+                    System.out.println(order);
+                    return orderRepository.save(order);
+                })
+                .hasElement().subscribe(System.out::println);
+        //Mono.just(getOrder())
+        // .map(service::createOrder)
+        // .subscribe(System.out::println);
 
 
     }
@@ -82,19 +95,14 @@ public class ReactiveProgBackendApplication implements CommandLineRunner {
 
     public Order getOrder() {
         Item item1 = new Item();
+        item1.setIdItem(101);
         item1.setName("Test1");
         item1.setPrice(new BigDecimal("2.35"));
         item1.setType("TEST");
         item1.setQuantity(13);
 
         List<Item> items = new ArrayList<>();
-        items.add(item1);
-
-        List<ItemOrder> listItemOrder = new ArrayList<>();
-
-        ItemOrder itemOrder1 = new ItemOrder();
-        itemOrder1.setItem(item1);
-        listItemOrder.add(itemOrder1);
+        //Item[] items = {item1};
 
         Customer customer = new Customer();
         customer.setIdCustomer(101);
@@ -104,9 +112,10 @@ public class ReactiveProgBackendApplication implements CommandLineRunner {
         Order order = new Order();
         order.setCustomer(customer);
         order.setStatus(Order.OrderStatus.PROCESSING);
-        order.setItemOrders(listItemOrder);
+        //order.setItems(items);
+        order.setItems(items);
         order.setTotalPrice(new BigDecimal(0));
-        System.out.println(order);
+        //System.out.println(order);
         return order;
     }
 }

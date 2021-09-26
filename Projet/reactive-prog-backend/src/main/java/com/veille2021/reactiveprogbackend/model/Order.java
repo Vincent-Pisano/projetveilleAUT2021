@@ -1,7 +1,11 @@
 package com.veille2021.reactiveprogbackend.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,7 +34,10 @@ public class Order {
 
     @OneToMany
     @Column
-    private List<ItemOrder> itemOrders;
+    //@JsonSerialize(as = Item.class)
+    //@JsonDeserialize(as = Item.class)
+    private List<Item> items;
+    //private Item[] items;
 
     @OneToOne
     @Column

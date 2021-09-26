@@ -17,9 +17,31 @@ class WebConfig implements WebFluxConfigurer {
 
                         @Override
                         public void addCorsMappings(CorsRegistry registry) {
-                                registry.addMapping("/**").allowedOrigins("*")
-                                        .allowedMethods("*");
+                                registry.addMapping("/**")
+                                        .allowedOrigins("*")
+                                        .allowedMethods("*")
+                                        .allowedHeaders("Content-Type");
                         }
                 };
         }
+
+        /*private final ObjectMapper objectMapper;
+
+        @Autowired
+        public AppConfig(ObjectMapper objectMapper) {
+                this.objectMapper = objectMapper;
+                this.webClientBuilder = WebClient.builder()
+                        .exchangeStrategies(exchangeStrategies());
+        }
+
+        private ExchangeStrategies exchangeStrategies() {
+                Jackson2JsonEncoder encoder = new Jackson2JsonEncoder(objectMapper);
+                Jackson2JsonDecoder decoder = new Jackson2JsonDecoder(objectMapper);
+                return ExchangeStrategies
+                        .builder()
+                        .codecs(configurer -> {
+                                configurer.defaultCodecs().jackson2JsonEncoder(encoder);
+                                configurer.defaultCodecs().jackson2JsonDecoder(decoder);
+                        }).build();
+        }*/
 }

@@ -32,6 +32,7 @@ public class InventoryService {
                             .findAny().get().getQuantity();
                     if (p.getQuantity() >= q) {
                         p.setQuantity(p.getQuantity() - q);
+                        logger.info("Passed through handleOrder");
                         return itemRepository.save(p);
                     } else {
                         return Mono.error(new RuntimeException("Product is out of stock: " + p.getName()));

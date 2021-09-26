@@ -12,12 +12,15 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+
 @org.springframework.stereotype.Service
 public class Service {
 
     @Autowired
     private CustomerRepository customerRepository;
     private CommentRepository commentRepository;
+    @Autowired
     private OrderRepository orderRepository;
     private ItemRepository itemRepository;
 
@@ -40,10 +43,15 @@ public class Service {
     }
 
     public Mono<Order> createOrder(Order order) {
-        System.out.println(order);
+        System.out.println("test : " + order);
+        order.setItems(new ArrayList<>());
+        //order.setItems(new Item[0]);
+        order.setCustomer(null);
+        System.out.println("test : " + order);
         return Mono.just(order)
                 .flatMap(orderRepository::save)
                 .flatMap(o -> {
+                    System.out.println("test : " + o);
                     return client.method(HttpMethod.POST)
                             .uri("https://localhost:8181/processOrder")
                             .body(BodyInserters.fromValue(o))
