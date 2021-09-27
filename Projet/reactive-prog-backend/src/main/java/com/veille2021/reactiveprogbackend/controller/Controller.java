@@ -5,6 +5,7 @@ import com.veille2021.reactiveprogbackend.model.Order;
 import com.veille2021.reactiveprogbackend.service.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -29,6 +30,8 @@ public class Controller {
             //consumes = MediaType.APPLICATION_JSON_VALUE,
             //produces = MediaType.APPLICATION_JSON_VALUE,
             )
+    @Transactional
+    @ResponseBody
     public Mono<Order> create(@RequestBody Order order) {
         System.err.println(order);
         return service.createOrder(order)

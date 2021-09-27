@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -32,16 +33,16 @@ public class Order {
     @Column
     private OrderStatus status;
 
-    @OneToMany
-    @Column
-    //@JsonSerialize(as = Item.class)
-    //@JsonDeserialize(as = Item.class)
-    private List<Item> items;
+    //@OneToMany
+    //@Column
+    //@JsonSerialize(as = ArrayList.class)
+    //@JsonDeserialize(as = ArrayList.class)
+    //private List<Item> items;
     //private Item[] items;
 
-    @OneToOne
-    @Column
-    private Customer customer;
+    //@OneToOne
+    //@Column
+    //private Customer customer;
 
     public Order setStatus(OrderStatus status) {
         this.status = status;

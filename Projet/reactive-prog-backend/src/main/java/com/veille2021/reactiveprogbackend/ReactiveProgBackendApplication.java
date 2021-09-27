@@ -69,15 +69,15 @@ public class ReactiveProgBackendApplication implements CommandLineRunner {
         item1.setPrice(new BigDecimal("2.35"));
         item1.setType("TEST");
         item1.setQuantity(0);*/
-        Mono.just(getOrder())
+        /*Mono.just(getOrder())
                 .map(order -> {
                     System.out.println(order);
                     return orderRepository.save(order);
                 })
-                .hasElement().subscribe(System.out::println);
-        //Mono.just(getOrder())
-        // .map(service::createOrder)
-        // .subscribe(System.out::println);
+                .hasElement().subscribe(System.out::println);*/
+        Mono.just(getOrder())
+         .map(service::createOrder)
+         .subscribe(System.out::println);
 
 
     }
@@ -110,10 +110,10 @@ public class ReactiveProgBackendApplication implements CommandLineRunner {
         customer.setPassword("Pasword123");
 
         Order order = new Order();
-        order.setCustomer(customer);
+        //order.setCustomer(customer);
         order.setStatus(Order.OrderStatus.PROCESSING);
         //order.setItems(items);
-        order.setItems(items);
+        //order.setItems(items);
         order.setTotalPrice(new BigDecimal(0));
         //System.out.println(order);
         return order;

@@ -43,20 +43,22 @@ public class Service {
     }
 
     public Mono<Order> createOrder(Order order) {
-        System.out.println("test : " + order);
-        order.setItems(new ArrayList<>());
+        System.out.println("test1 : " + order);
+        //order.setItems(new ArrayList<>());
         //order.setItems(new Item[0]);
-        order.setCustomer(null);
-        System.out.println("test : " + order);
+        //order.setCustomer(null);
+        //System.out.println("test : " + order);
         return Mono.just(order)
+
                 .flatMap(orderRepository::save)
                 .flatMap(o -> {
-                    System.out.println("test : " + o);
+                    System.out.println("test2 : " + o);
                     return client.method(HttpMethod.POST)
                             .uri("https://localhost:8181/processOrder")
                             .body(BodyInserters.fromValue(o))
                             .retrieve().bodyToMono(Order.class);
-                });
+                })
+                ;
     }
 }
 

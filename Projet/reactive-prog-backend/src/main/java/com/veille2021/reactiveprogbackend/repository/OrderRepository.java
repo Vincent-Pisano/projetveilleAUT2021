@@ -7,7 +7,8 @@ import reactor.core.publisher.Mono;
 
 public interface OrderRepository extends ReactiveCrudRepository<Order, Integer> {
 
-    @Override
-    //@Query(value = "INSERT INTO public.order VALUES ($1.idOrder, $1.totalPrice, $1.status, $1.customer.id_customer)")
-    <S extends Order> Mono<S> save(S s);
+    //@Override
+    //@Query(value = "INSERT INTO public.order (total_price, status) " +
+    //        "VALUES ($1, $2)")
+    //<S extends Order> Mono<S> save(S s);
 }
