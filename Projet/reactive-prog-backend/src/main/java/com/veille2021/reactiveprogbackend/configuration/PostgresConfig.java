@@ -49,7 +49,6 @@ public class PostgresConfig extends AbstractR2dbcConfiguration {
                 .host("localhost")
                 .database("postgres")
                 .username("postgres")
-                .password("Xima047603")
                 .port(5432)
                 .build());
     }
