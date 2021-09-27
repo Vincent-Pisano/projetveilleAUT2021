@@ -1,5 +1,6 @@
 package com.veille2021.reactiveprogbackend;
 
+import com.veille2021.reactiveprogbackend.configuration.PostgresConfig;
 import com.veille2021.reactiveprogbackend.converter.CommentConverter;
 import com.veille2021.reactiveprogbackend.model.*;
 import com.veille2021.reactiveprogbackend.repository.CommentRepository;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -20,6 +23,8 @@ import java.util.List;
 import java.util.Random;
 
 @SpringBootApplication
+//@EnableR2dbcRepositories
+@Import(PostgresConfig.class)
 public class ReactiveProgBackendApplication implements CommandLineRunner {
 
     @Autowired
