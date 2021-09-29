@@ -8,12 +8,16 @@ import com.veille2021.reactiveprogbackend.repository.CustomerRepository;
 import com.veille2021.reactiveprogbackend.repository.ItemRepository;
 import com.veille2021.reactiveprogbackend.repository.OrderRepository;
 import com.veille2021.reactiveprogbackend.service.Service;
+import io.r2dbc.postgresql.PostgresqlConnectionConfiguration;
+import io.r2dbc.postgresql.PostgresqlConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.env.Environment;
 import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
+import org.springframework.r2dbc.core.DatabaseClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -42,12 +46,26 @@ public class ReactiveProgBackendApplication implements CommandLineRunner {
     @Autowired
     private Service service;
 
+    DatabaseClient databaseClient;
+
+    @Autowired
+    private Environment env;
+
     public static void main(String[] args) {
         SpringApplication.run(ReactiveProgBackendApplication.class, args);
     }
 
     @Override
     public void run(String... args) throws Exception {
+        databaseClient = DatabaseClient.builder().connectionFactory(new PostgresqlConnectionFactory(PostgresqlConnectionConfiguration
+                .builder()
+                .host("localhost")
+                .database("postgres")
+                .username("postgres")
+                .schema("public")
+                .password(env.getProperty("database.password"))
+                .port(5432)
+                .build())).build();
         //CommentConverter converter = new CommentConverter();
         //Integer idItem = 95;
 
@@ -80,11 +98,12 @@ public class ReactiveProgBackendApplication implements CommandLineRunner {
                     return orderRepository.save(order);
                 })
                 .hasElement().subscribe(System.out::println);*/
-        Mono.just(getOrder())
-         .map(service::createOrder)
-         .subscribe(System.out::println);
+        //Mono.just(getOrder())
+        // .map(service::createOrder)
+        // .flatMap(orderRepository::save)
+        // .subscribe(System.out::println);
 
-
+        //databaseClient.sql("INSERT INTO public.order (total_price, status) VALUES ($1, $2)");
     }
 
     public Flux<Comment> findCommentFromItem(Integer idItem){

@@ -7,6 +7,7 @@ import org.springframework.data.relational.core.mapping.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Data
 @Entity
@@ -28,5 +29,13 @@ public class Item {
 
     @Column
     private Integer quantity;
+
+    /*@Override
+    public boolean equals(Object object) {
+        boolean flag = false;
+        if (object instanceof Item)
+            flag = this.name.equals(((Item) object).getName());
+        return flag;
+    }*/
 
 }

@@ -27,9 +27,11 @@ public class PostgresConfig extends AbstractR2dbcConfiguration {
 import io.r2dbc.postgresql.PostgresqlConnectionConfiguration;
 import io.r2dbc.postgresql.PostgresqlConnectionFactory;
 import io.r2dbc.spi.ConnectionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.data.r2dbc.config.AbstractR2dbcConfiguration;
 import org.springframework.data.r2dbc.dialect.PostgresDialect;
 import org.springframework.r2dbc.core.DatabaseClient;
@@ -41,6 +43,10 @@ import org.springframework.data.relational.core.mapping.RelationalMappingContext
 @Configuration
 @EnableR2dbcRepositories("com.veille2021.reactiveprogbackend.repository")
 public class PostgresConfig extends AbstractR2dbcConfiguration {
+
+    @Autowired
+    private Environment env;
+    
     @Bean
     @Override
     public PostgresqlConnectionFactory connectionFactory() {
@@ -49,6 +55,8 @@ public class PostgresConfig extends AbstractR2dbcConfiguration {
                 .host("localhost")
                 .database("postgres")
                 .username("postgres")
+                .schema("public")
+                .password(env.getProperty("database.password"))
                 .port(5432)
                 .build());
     }
@@ -57,12 +65,5 @@ public class PostgresConfig extends AbstractR2dbcConfiguration {
     public DatabaseClient r2dbcDatabaseClient(@Qualifier("connectionFactory") ConnectionFactory connectionFactory){
         return DatabaseClient.builder().connectionFactory(connectionFactory).build();
     }
-
-    /*@Bean
-    R2dbcRepositoryFactory repositoryFactory(@Qualifier("databaseClient") DatabaseClient client){
-        RelationalMappingContext context = new RelationalMappingContext();
-        context.afterPropertiesSet();
-        return new R2dbcRepositoryFactory(client,context, new DefaultReactiveDataAccessStrategy(new PostgresDialect()));
-    }*/
 
 }

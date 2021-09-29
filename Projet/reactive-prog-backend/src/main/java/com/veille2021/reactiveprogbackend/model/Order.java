@@ -7,16 +7,13 @@ import org.springframework.data.annotation.Id;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Entity
+@Table(name = "public.order")
 public class Order {
 
     public enum OrderStatus {
@@ -40,9 +37,9 @@ public class Order {
     //private List<Item> items;
     //private Item[] items;
 
-    //@OneToOne
-    //@Column
-    //private Customer customer;
+    @OneToOne
+    @Column
+    private Customer customer;
 
     public Order setStatus(OrderStatus status) {
         this.status = status;

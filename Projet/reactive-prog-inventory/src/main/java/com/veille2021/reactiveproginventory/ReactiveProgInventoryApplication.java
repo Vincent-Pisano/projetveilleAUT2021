@@ -9,11 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.r2dbc.core.DatabaseClient;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 @SpringBootApplication
@@ -49,7 +52,12 @@ public class ReactiveProgInventoryApplication implements CommandLineRunner {
         items.add(item2);
 
         //itemRepository.deleteAll(items);
-        itemRepository.saveAll(items).map(item -> {
+        Flux.fromIterable(items)
+            .flatMap(item -> itemRepository.findItemByName(item.getName()))
+            .doOnNext(item -> itemRepository.delete(item).subscribe())
+            .collectList()
+            .flatMap(itemList -> itemRepository.saveAll(items)
+                .map(item -> {
                     item.setQuantity(new Random().nextInt(item.getQuantity()));
                     return item;
                 }).collectList()
@@ -66,14 +74,27 @@ public class ReactiveProgInventoryApplication implements CommandLineRunner {
                     order.setItems(listItems);
                     order.setTotalPrice(new BigDecimal(0));
                     return order;
-                }).subscribe(order -> {
-                    service.handleOrder(order).doOnNext(order1 -> {
-                        Flux.fromIterable(order1.getItems())
-                                .flatMap(item -> itemRepository.findById(item.getIdItem()))
-                                .subscribe(item -> System.out.println("test" + item.toString()));
-                    })
+                })
+            )
+            .subscribe(order -> {
+                service.handleOrder(order).doOnNext(order1 -> {
+                    Flux.fromIterable(order1.getItems())
+                            .flatMap(item -> itemRepository.findById(item.getIdItem()));
+                })
                 .subscribe(System.out::println);
-        });
+            });
+
+
+
+
+
+
+
+
+
+
+
+
 
         //order.setTotalPrice(itemOrders.forEach(itemOrder -> {
         //    itemOrder.getItem().getPrice().multiply(BigDecimal.valueOf(itemOrder.getQuantity();
